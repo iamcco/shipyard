@@ -6,14 +6,14 @@ use crate::type_id::TypeId;
 use crate::{AsLabel, WorkloadModificator};
 use alloc::vec::Vec;
 use core::any::{type_name, Any};
-use core::sync::atomic::{AtomicU64, Ordering};
+use core::sync::atomic::{AtomicU32, Ordering};
 // macro not module
 use alloc::boxed::Box;
 use alloc::string::ToString;
 use alloc::vec;
 
-static WORKLOAD_ID: AtomicU64 = AtomicU64::new(1);
-fn unique_id() -> u64 {
+static WORKLOAD_ID: AtomicU32 = AtomicU32::new(1);
+fn unique_id() -> u32 {
     WORKLOAD_ID.fetch_add(1, Ordering::Relaxed)
 }
 
@@ -91,7 +91,7 @@ pub trait IntoWorkload<Views, R> {
     /// assert_eq!(world.borrow::<View<Health>>().unwrap().len(), 900);
     /// ```
     fn into_workload(self) -> Workload;
-    /// Converts to a collection of systems.  
+    /// Converts to a collection of systems.
     /// All systems will run one after the other. Does not propagate into nested [`Workload`] but they will run sequentially between them.
     ///
     /// Not different than [`into_workload`](IntoWorkload::into_workload) for a single system.
@@ -115,7 +115,7 @@ pub trait IntoWorkload<Views, R> {
     /// (workload1, sys3, sys4).into_sequential_workload();
     /// ```
     ///
-    /// In this example `sys1` and `sys2` can run in parallel but always before `sys3`.  
+    /// In this example `sys1` and `sys2` can run in parallel but always before `sys3`.
     /// `sys3` and `sys4` run sequentially.
     fn into_sequential_workload(self) -> Workload;
 }

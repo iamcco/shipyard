@@ -8,7 +8,7 @@ use core::hash::{Hash, Hasher};
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, PartialOrd, Ord)]
 #[cfg_attr(feature = "serde1", derive(serde::Serialize, serde::Deserialize))]
 
-pub struct TypeId(pub(crate) u64);
+pub struct TypeId(pub(crate) u32);
 
 impl TypeId {
     pub(crate) fn of<T: ?Sized + 'static>() -> Self {
@@ -26,7 +26,7 @@ impl From<core::any::TypeId> for TypeId {
 
         type_id.hash(&mut hasher);
 
-        TypeId(hasher.finish())
+        TypeId(hasher.finish() as u32)
     }
 }
 
@@ -36,7 +36,7 @@ impl From<&core::any::TypeId> for TypeId {
 
         type_id.hash(&mut hasher);
 
-        TypeId(hasher.finish())
+        TypeId(hasher.finish() as u32)
     }
 }
 
